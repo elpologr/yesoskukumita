@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artesanías en Yeso - Catálogo Interactivo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        
+        /* Barra de Redes */
+        .barra-redes {
+            background-color: #111;
+            color: white;
+            padding: 10px 20px;
+            text-align: right;
+            font-size: 14px;
+        }
+        .barra-redes span {
+            font-weight: bold;
+            color: #ccc;
+        }
+        .barra-redes a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 15px;
+            transition: color 0.2s;
+        }
+        .barra-redes a:hover {
+            color: #fe2c55;
+        }
+
+        /* Banner */
+        .banner {
+            width: 100%;
+            max-height: 350px;
+            overflow: hidden;
+            background-color: #ddd;
+            display: flex;
+            justify-content: center;
+        }
+        .banner img {
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .contenedor {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* ==========================================
+           NUEVA SECCIÓN: FAMILIAR Y MARCAS HERMANAS
+           ========================================== */
+        .seccion-titulo-bloque {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 10px;
+            font-size: 28px;
+            color: #111;
+            position: relative;
+        }
+        .seccion-titulo-bloque::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background-color: #fe2c55;
+            margin: 8px auto 0 auto;
+            border-radius: 2px;
+        }
+        .grilla-familia {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+            margin-top: 25px;
+        }
+        .familiar-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            border: 1px solid #e0e0e0;
+            text-align: center;
+            padding-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .familiar-img-taller {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background-color: #eee;
+        }
+        .familiar-perfil-contenedor {
+            width: 80px;
+            height: 80px;
+            margin-top: -40px;
+            border-radius: 50%;
+            border: 4px solid white;
+            overflow: hidden;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+            background-color: #fff;
+        }
+        .familiar-img-perfil {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .familiar-info {
+            padding: 10px 15px;
+            flex-grow: 1;
+        }
+        .familiar-nombre {
+            font-size: 18px;
+            margin: 5px 0 2px 0;
+            font-weight: bold;
+        }
+        .familiar-rol {
+            font-size: 13px;
+            color: #fe2c55;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+        .familiar-desc {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.4;
+            margin: 0 0 15px 0;
+        }
+        .btn-familiar-enlace {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #222;
+            color: white;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: bold;
+            border-radius: 20px;
+            transition: background-color 0.2s;
+        }
+        .btn-familiar-enlace:hover {
+            background-color: #fe2c55;
+        }
+
+        /* ==========================================
+           NUEVA SECCIÓN: VIDEOS DE YOUTUBE
+           ========================================== */
+        .grilla-videos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+            margin-top: 25px;
+        }
+        .video-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            border: 1px solid #e0e0e0;
+            position: relative;
+            transition: transform 0.2s;
+        }
+        .video-card:hover {
+            transform: translateY(-3px);
+        }
+        .video-enlace {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            position: relative;
+        }
+        .video-miniatura {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background-color: #000;
+            display: block;
+        }
+        /* Icono de Play superpuesto */
+        .video-play-icono {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(254, 44, 85, 0.9);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: background-color 0.2s, transform 0.2s;
+        }
+        .video-card:hover .video-play-icono {
+            background-color: #ff0000;
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+        .video-pie {
+            padding: 12px 15px;
+            font-weight: bold;
+            font-size: 15px;
+            text-align: center;
+            background-color: #fff;
+        }
+
+        /* Estilos del catálogo base */
+        h1 { text-align: center; margin-bottom: 20px; }
+        .subtitulo { text-align: center; color: #666; margin-bottom: 30px; margin-top: -10px;}
+
+        /* MENÚ DE BOTONES DE FILSTRO (CATEGORÍAS) */
+        .menu-filtros {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .btn-filtro {
+            background-color: white;
+            border: 2px solid #333;
+            color: #333;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-filtro:hover, .btn-filtro.activo {
+            background-color: #333;
+            color: white;
+        }
+
+        /* CONTENEDOR DE PRECIOS */
+        .seccion-precios {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .seccion-precios p {
+            margin-top: 0;
+            font-weight: bold;
+            color: #555;
+        }
+        .lista-precios {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .btn-precio {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            color: #333;
+            padding: 6px 14px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-precio:hover, .btn-precio.activo {
+            background-color: #fe2c55;
+            color: white;
+            border-color: #fe2c55;
+        }
+
+        /* GRILLA DE PRODUCTOS */
+        .grilla-productos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        /* TARJETA DE PRODUCTO */
+        .producto-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            border: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s;
+        }
+        .producto-card:hover {
+            transform: translateY(-5px);
+        }
+        .producto-img {
+            width: 100%;
+            height: 200px;
+            background-color: #eee;
+            object-fit: cover;
+        }
+        .producto-info {
+            padding: 15px;
+        }
+        .producto-titulo {
+            font-size: 18px;
+            margin: 0 0 10px 0;
+            font-weight: bold;
+        }
+        .producto-detalles {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        .producto-precio {
+            font-size: 20px;
+            font-weight: bold;
+            color: #111;
+            margin-bottom: 15px;
+        }
+        
+        .btn-compra {
+            display: block;
+            text-align: center;
+            background-color: #000;
+            color: white;
+            border: none;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-compra:hover {
+            background-color: #fe2c55;
+        }
+
+        /* Mensaje cuando no hay productos */
+        .sin-resultados {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px;
+            color: #888;
+            font-size: 16px;
+            display: none;
+        }
+
+        /* VENTANA MODAL (OPCIONES DE COMPRA) */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1000; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            background-color: rgba(0,0,0,0.6); 
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(3px);
+        }
+        .modal-contenido {
+            background-color: white;
+            padding: 25px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+            animation: aparecer 0.3s ease;
+        }
+        @keyframes aparecer {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .cerrar-modal {
+            position: absolute;
+            top: 12px;
+            right: 15px;
+            font-size: 22px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #666;
+        }
+        .cerrar-modal:hover { color: #000; }
+        
+        .modal-titulo {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #222;
+        }
+
+        /* BOTONES DE TIENDAS DENTRO DE LA MODAL */
+        .opciones-tiendas {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .btn-tienda {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: transform 0.2s, filter 0.2s;
+        }
+        .btn-tienda:hover {
+            transform: scale(1.02);
+            filter: brightness(1.1);
+        }
+        /* Colores temáticos de las marcas */
+        .tienda-ml { background-color: #fff159; color: #333; }
+        .tienda-mp { background-color: #009ee3; color: white; }
+        .tienda-temu { background-color: #ff6600; color: white; }
+        .tienda-amazon { background-color: #232f3e; color: white; }
+        .tienda-tiktok { background-color: #000000; color: white; border: 1px solid #333; }
+    </style>
+</head>
+<body>
+
+    <div class="barra-redes">
+        <span>Síguenos en nuestras redes sociales:</span>
+        <a href="#" target="_blank">YouTube</a>
+        <a href="#" target="_blank">Facebook</a>
+        <a href="#" target="_blank">Instagram</a>
+        <a href="#" target="_blank">TikTok</a>
+    </div>
+
+    <div class="banner">
+        <img src="imagenes/banner-yeso.png" alt="banner-yeso">
+    </div>
+
+    <div class="contenedor">
+
+        <h2 class="seccion-titulo-bloque">Empresa Familiar Kukumita</h2>
+        <div class="grilla-familia">
+            
+            <div class="familiar-card">
+                <img class="familiar-img-taller" src="imagenes/taller-tu.jpg" alt="Fabricando figuras de yeso">
+                <div class="familiar-perfil-contenedor">
+                    <img class="familiar-img-perfil" src="imagenes/perfil-tu.jpg" alt="Logo o foto de marca propia">
+                </div>
+                <div class="familiar-info">
+                    <h3 class="familiar-nombre">Yesos Polo Kukumita</h3>
+                    <div class="familiar-rol">Fabricante de Yeso</div>
+                    <p class="familiar-desc">Creacion de piezas de Yeso en variedad de figuras, macetas, bases, tazones y arreglos, para eventos o por mayoreo para reventa.</p>
+                </div>
+                <a href="#grilla" class="btn-familiar-enlace">Ver Catálogo ↓</a>
+            </div>
+
+            <div class="familiar-card">
+                <img class="familiar-img-taller" src="imagenes/taller-mama.jpg" alt="Fabricando velas">
+                <div class="familiar-perfil-contenedor">
+                    <img class="familiar-img-perfil" src="imagenes/perfil-mama.jpg" alt="Logo de Velas">
+                </div>
+                <div class="familiar-info">
+                    <h3 class="familiar-nombre">Velas Kukumita</h3>
+                    <div class="familiar-rol">Velas Aromáticas</div>
+                    <p class="familiar-desc">Velas artesanales hechas con variedad de ceras. El complemento perfecto para iluminar tus espacios y eventos.</p>
+                </div>
+                <a href="https://link-de-la-pagina-de-velas.com" target="_blank" class="btn-familiar-enlace">Visitar Tienda ↗</a>
+            </div>
+
+            <div class="familiar-card">
+                <img class="familiar-img-taller" src="imagenes/taller-hermana.jpg" alt="Pintando figuras de yeso">
+                <div class="familiar-perfil-contenedor">
+                    <img class="familiar-img-perfil" src="imagenes/perfil-hermana.jpg" alt="Logo de Hermana">
+                </div>
+                <div class="familiar-info">
+                    <h3 class="familiar-nombre">Yesos Fer Kukumita</h3>
+                    <div class="familiar-rol">Diseño & Color</div>
+                    <p class="familiar-desc">Mente creativa a cargo de los acabados, pintura y personalización de piezas de yeso y velas decorativas.</p>
+                </div>
+                <a href="https://link-de-la-pagina-de-tu-hermana.com" target="_blank" class="btn-familiar-enlace">Visitar Página ↗</a>
+            </div>
+
+        </div>
+
+        <h2 class="seccion-titulo-bloque">El Proceso en Video</h2>
+        <div class="grilla-videos">
+            
+            <div class="video-card">
+                <a class="video-enlace" href="https://www.youtube.com/watch?v=TU_LINK_AQUI_1" target="_blank">
+                    <img class="video-miniatura" src="imagenes/miniatura1.jpg" alt="Miniatura Video 1">
+                    <div class="video-play-icono">▶</div>
+                    <div class="video-pie">¿Cómo hacemos los moldes?</div>
+                </a>
+            </div>
+
+            <div class="video-card">
+                <a class="video-enlace" href="https://www.youtube.com/watch?v=TU_LINK_AQUI_2" target="_blank">
+                    <img class="video-miniatura" src="imagenes/miniatura2.jpg" alt="Miniatura Video 2">
+                    <div class="video-play-icono">▶</div>
+                    <div class="video-pie">El secreto para un yeso perfecto</div>
+                </a>
+            </div>
+
+            <div class="video-card">
+                <a class="video-enlace" href="https://www.youtube.com/watch?v=TU_LINK_AQUI_3" target="_blank">
+                    <img class="video-miniatura" src="imagenes/miniatura3.jpg" alt="Miniatura Video 3">
+                    <div class="video-play-icono">▶</div>
+                    <div class="video-pie">Detrás de cámaras en el taller</div>
+                </a>
+            </div>
+
+        </div>
+
+
+        <h1>Catálogo de Figuras de Yeso de Polo</h1>
+        <p class="subtitulo">Categorias Y Precios.</p>
+
+        <div class="menu-filtros">
+            <button class="btn-filtro activo" onclick="filtrarCategoria('todos')">Ver Todo</button>
+            <button class="btn-filtro" onclick="filtrarCategoria('figuras')">Figuras</button>
+            <button class="btn-filtro" onclick="filtrarCategoria('macetas')">Macetas</button>
+            <button class="btn-filtro" onclick="filtrarCategoria('bases')">Bases</button>
+        </div>
+
+        <div class="seccion-precios">
+            <p>Filtrar por Precio:</p>
+            <div class="lista-precios">
+                <button class="btn-precio activo" onclick="filtrarPrecio('todos')">Todos los precios</button>
+                <button class="btn-precio" onclick="filtrarPrecio('2')">$2</button>
+                <button class="btn-precio" onclick="filtrarPrecio('5')">$5</button>
+                <button class="btn-precio" onclick="filtrarPrecio('10')">$10</button>
+                <button class="btn-precio" onclick="filtrarPrecio('12')">$12</button>
+                <button class="btn-precio" onclick="filtrarPrecio('15')">$15</button>
+                <button class="btn-precio" onclick="filtrarPrecio('20')">$20</button>
+                <button class="btn-precio" onclick="filtrarPrecio('25')">$25</button>
+                <button class="btn-precio" onclick="filtrarPrecio('30')">$30</button>
+                <button class="btn-precio" onclick="filtrarPrecio('35')">$35</button>
+                <button class="btn-precio" onclick="filtrarPrecio('40')">$40</button>
+            </div>
+        </div>
+
+        <div class="grilla-productos" id="grilla">
+
+            <div class="sin-resultados" id="mensaje-vacio">No hay piezas disponibles en esta categoría con el precio seleccionado.</div>
+
+            <div class="producto-card" data-categoria="figuras" data-precio="5">
+                <img class="producto-img" src="imagenes/stich-5.png" alt="Stich">
+                <div class="producto-info">
+                    <h3 class="producto-titulo">Stich</h3>
+                    <p class="producto-detalles">Tamaño: Pequeño (6cm)<br>Categoría: Figuras</p>
+                    <div class="producto-precio">$5.00 MXN</div>
+                    <button class="btn-compra" onclick="abrirOpcionesCompra(this)" 
+                        data-nombre="Stich"
+                        data-ml="https://www.mercadolibre.com.mx/tu-link-aqui" 
+                        data-mp="https://link.mercadopago.com.mx/tu-link-aqui" 
+                        data-temu="https://www.temu.com/tu-link-aqui" 
+                        data-amazon="https://www.amazon.com.mx/tu-link-aqui" 
+                        data-tiktok="https://www.tiktok.com/tu-link-aqui">
+                        Comprar 🛒
+                    </button>
+                </div>
+            </div>
+
+            <div class="producto-card" data-categoria="figuras" data-precio="2">
+                <img class="producto-img" src="imagenes/virgen1-2.png" alt="Virgen Diminuta">
+                <div class="producto-info">
+                    <h3 class="producto-titulo">Virgen Diminuta 1</h3>
+                    <p class="producto-detalles">Tamaño: Mini (5cm)<br>Categoría: Figuras</p>
+                    <div class="producto-precio">$2.00 MXN</div>
+                    <button class="btn-compra" onclick="abrirOpcionesCompra(this)" 
+                        data-nombre="Virgen Diminuta 1"
+                        data-ml="#" data-mp="#" data-temu="#" data-amazon="#" data-tiktok="#">
+                        Comprar 🛒
+                    </button>
+                </div>
+            </div>
+
+            <div class="producto-card" data-categoria="figuras" data-precio="5">
+                <img class="producto-img" src="imagenes/unicornio-5.png" alt="Maceta Geométrica">
+                <div class="producto-info">
+                    <h3 class="producto-titulo">Unicornio</h3>
+                    <p class="producto-detalles">Tamaño: chico (6cm)<br>Categoría: figuras</p>
+                    <div class="producto-precio">$5.00 MXN</div>
+                    <button class="btn-compra" onclick="abrirOpcionesCompra(this)" 
+                        data-nombre="Unicornio"
+                        data-ml="#" data-mp="#" data-temu="#" data-amazon="#" data-tiktok="#">
+                        Comprar 🛒
+                    </button>
+                </div>
+            </div>
+
+            <div class="producto-card" data-categoria="figuras" data-precio="5">
+                <img class="producto-img" src="imagenes/ositogordito1-5.png" alt="Osito">
+                <div class="producto-info">
+                    <h3 class="producto-titulo">Osito 1</h3>
+                    <p class="producto-detalles">Tamaño: Chico (5cm)<br>Categoría: figuras</p>
+                    <div class="producto-precio">$5.00 MXN</div>
+                    <button class="btn-compra" onclick="abrirOpcionesCompra(this)" 
+                        data-nombre="Osito 1"
+                        data-ml="#" data-mp="#" data-temu="#" data-amazon="#" data-tiktok="#">
+                        Comprar 🛒
+                    </button>
+                </div>
+            </div>
+
+            <div class="producto-card" data-categoria="basesta-precio="10">
+                <img class="producto-img" src="imagenes/base1-10.png" alt="base cuadrada">
+                <div class="producto-info">
+                    <h3 class="producto-titulo">Base Cuadrada</h3>
+                    <p class="producto-detalles">Tamaño: mediano (3cm)<br>Categoría: bases</p>
+                    <div class="producto-precio">$10.00 MXN</div>
+                    <button class="btn-compra" onclick="abrirOpcionesCompra(this)" 
+                        data-nombre="base cuadrada"
+                        data-ml="#" data-mp="#" data-temu="#" data-amazon="#" data-tiktok="#">
+                        Comprar 🛒
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="modalCompra" class="modal" onclick="cerrarOpcionesCompra(event)">
+        <div class="modal-contenido" onclick="event.stopPropagation()">
+            <span class="cerrar-modal" onclick="document.getElementById('modalCompra').style.display='none'">&times;</span>
+            <div class="modal-titulo" id="modalTituloProducto">¿Dónde deseas comprar?</div>
+            
+            <div class="opciones-tiendas">
+                <a id="link-ml" href="#" target="_blank" class="btn-tienda tienda-ml">🟡 Mercado Libre</a>
+                <a id="link-mp" href="#" target="_blank" class="btn-tienda tienda-mp">🔵 Mercado Pago</a>
+                <a id="link-temu" href="#" target="_blank" class="btn-tienda tienda-temu">🟠 Temu</a>
+                <a id="link-amazon" href="#" target="_blank" class="btn-tienda tienda-amazon">⚫ Amazon</a>
+                <a id="link-tiktok" href="#" target="_blank" class="btn-tienda tienda-tiktok">🎵 TikTok Shop</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let categoriaActual = 'todos';
+        let precioActual = 'todos';
+
+        function filtrarCategoria(categoria) {
+            categoriaActual = categoria;
+            const botonesCat = document.querySelectorAll('.menu-filtros .btn-filtro');
+            botonesCat.forEach(btn => btn.classList.remove('activo'));
+            event.target.classList.add('activo');
+
+            precioActual = 'todos';
+            const botonesPre = document.querySelectorAll('.lista-precios .btn-precio');
+            botonesPre.forEach(btn => btn.classList.remove('activo'));
+            document.querySelector('.lista-precios .btn-precio[onclick*="todos"]').classList.add('activo');
+
+            aplicarFiltros();
+        }
+
+        function filtrarPrecio(precio) {
+            precioActual = precio;
+            const botonesPre = document.querySelectorAll('.lista-precios .btn-precio');
+            botonesPre.forEach(btn => btn.classList.remove('activo'));
+            event.target.classList.add('activo');
+
+            aplicarFiltros();
+        }
+
+        function aplicarFiltros() {
+            const productos = document.querySelectorAll('.producto-card');
+            let contadorVisibles = 0;
+
+            productos.forEach(producto => {
+                const catProducto = producto.getAttribute('data-categoria');
+                const precioProducto = producto.getAttribute('data-precio');
+
+                const cumpleCategoria = (categoriaActual === 'todos' || catProducto === categoriaActual);
+                const cumplePrecio = (precioActual === 'todos' || precioProducto === precioActual);
+
+                if (cumpleCategoria && cumplePrecio) {
+                    producto.style.display = 'flex';
+                    contadorVisibles++;
+                } else {
+                    producto.style.display = 'none';
+                }
+            });
+
+            const mensajeVacio = document.getElementById('mensaje-vacio');
+            if (contadorVisibles === 0) {
+                mensajeVacio.style.display = 'block';
+            } else {
+                mensajeVacio.style.display = 'none';
+            }
+        }
+
+        function abrirOpcionesCompra(boton) {
+            const nombre = boton.getAttribute('data-nombre');
+            const linkML = boton.getAttribute('data-ml');
+            const linkMP = boton.getAttribute('data-mp');
+            const linkTemu = boton.getAttribute('data-temu');
+            const linkAmazon = boton.getAttribute('data-amazon');
+            const linkTiktok = boton.getAttribute('data-tiktok');
+
+            document.getElementById('modalTituloProducto').innerText = `Comprar "${nombre}" en:`;
+
+            document.getElementById('link-ml').href = linkML;
+            document.getElementById('link-mp').href = linkMP;
+            document.getElementById('link-temu').href = linkTemu;
+            document.getElementById('link-amazon').href = linkAmazon;
+            document.getElementById('link-tiktok').href = linkTiktok;
+
+            document.getElementById('modalCompra').style.display = 'flex';
+        }
+
+        function cerrarOpcionesCompra(event) {
+            if(event.target.id === "modalCompra") {
+                document.getElementById('modalCompra').style.display = 'none';
+            }
+        }
+    </script>
+
+</body>
+</html>
