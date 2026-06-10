@@ -4790,5 +4790,51 @@ window.togglePanelEventos = function() {
     if (icono) icono.textContent = visible ? '▼' : '▲';
 };
 
+window.togglePanelFormas = function() {
+    var panel = document.getElementById('panelFormaCarrusel');
+    var icono = document.getElementById('iconToggleFormas');
+    if (!panel) return;
+    var visible = panel.style.display !== 'none';
+    panel.style.display = visible ? 'none' : 'block';
+    if (icono) icono.textContent = visible ? '▼' : '▲';
+};
+
+// Filtro de forma global usando columna SubEtiqueta (data-subtags)
+var formaCarruselActiva = 'todos';
+
+window.seleccionarFormaCarrusel = function(btn, forma) {
+    formaCarruselActiva = forma;
+    // Marcar activo
+    document.querySelectorAll('.btn-forma-carrusel').forEach(function(b) {
+        b.classList.remove('activo-evento');
+        b.style.background = '';
+        b.style.color = '';
+        b.style.borderColor = '';
+    });
+    btn.classList.add('activo-evento');
+    if (forma === 'todos') {
+        btn.style.background = '#1a1a1a';
+        btn.style.color = '#fff';
+        btn.style.borderColor = '#1a1a1a';
+    }
+    // Aplicar filtro a todas las cards visibles
+    aplicarFiltroFormaCarrusel();
+};
+
+function aplicarFiltroFormaCarrusel() {
+    document.querySelectorAll('.card-dinamica').forEach(function(card) {
+        if (formaCarruselActiva === 'todos') {
+            card.classList.remove('oculto-forma-carrusel');
+        } else {
+            var subtags = (card.getAttribute('data-subtags') || '').toLowerCase().split('|').map(function(s){ return s.trim(); });
+            var coincide = subtags.some(function(t) { return t === formaCarruselActiva; });
+            card.classList.toggle('oculto-forma-carrusel', !coincide);
+        }
+    });
+    if (typeof window.actualizarPaginacion === 'function') window.actualizarPaginacion();
+}
+
+
+
 // ══════════════════════════════════════════════════════════════════
 // _reordenarBuscadorArreglos eliminada — el orden se mantiene directamente en cambiarModoVelas.

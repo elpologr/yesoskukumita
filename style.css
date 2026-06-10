@@ -512,6 +512,10 @@
             display: none;
         }
 
+        .card-dinamica.oculto-forma-carrusel {
+            display: none;
+        }
+
         /* ===== MODAL DE PRODUCTO ===== */
         #modalProducto {
             display: none;
