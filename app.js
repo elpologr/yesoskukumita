@@ -2192,7 +2192,7 @@ function actualizarEstadoSesionDrawer() {
     document.getElementById('drawerPerfilBloque').style.display = conSesion ? 'flex' : 'none';
     if (conSesion) {
         const foto = localStorage.getItem('velas-foto-perfil');
-        if (foto) document.getElementById('drawerAvatar').src = foto;
+        document.getElementById('drawerAvatar').src = foto || 'imagenes/perfil-yesoskukumita.webp';
         const nombre = localStorage.getItem('velas-nombre-usuario') || 'Mi cuenta';
         document.getElementById('drawerNombreUsuario').textContent = nombre;
     }
@@ -2209,7 +2209,7 @@ function cerrarSesion() {
 // ═══ PANTALLA PERFIL COMPLETA ═══
 function abrirPantallaPerfil() {
     const foto = localStorage.getItem('velas-foto-perfil');
-    if (foto) document.getElementById('pantallaAvatar').src = foto;
+    document.getElementById('pantallaAvatar').src = foto || 'imagenes/perfil-yesoskukumita.webp';
     document.getElementById('pantallaUsuarioNombre').textContent =
         localStorage.getItem('velas-nombre-usuario') || 'Mi cuenta';
     document.getElementById('pantallaPerfil').classList.add('activo');
@@ -4788,54 +4788,6 @@ window.togglePanelEventos = function() {
     var visible = panel.style.display !== 'none';
     panel.style.display = visible ? 'none' : 'block';
     if (icono) icono.textContent = visible ? '▼' : '▲';
-};
-
-// ══════════════════════════════════════════════════════════════════
-// PANEL BUSCA POR FORMA — colapsar / expandir + filtrar por data-subtags
-// ══════════════════════════════════════════════════════════════════
-window.togglePanelFormas = function() {
-    var panel = document.getElementById('panelFormaCarrusel');
-    var icono = document.getElementById('iconToggleFormas');
-    if (!panel) return;
-    var visible = panel.style.display !== 'none';
-    panel.style.display = visible ? 'none' : 'block';
-    if (icono) icono.textContent = visible ? '▼' : '▲';
-};
-
-window.filtrarPorFormaCarrusel = function(btnPulsado, subtag) {
-    // Marcar botón activo
-    document.querySelectorAll('.btn-forma-carrusel').forEach(function(b) {
-        b.classList.remove('activo-forma');
-        if (b.getAttribute('data-subtag') === 'todos') {
-            b.style.background = '';
-            b.style.color = '';
-            b.style.borderColor = '';
-        }
-    });
-    btnPulsado.classList.add('activo-forma');
-
-    // Activar modo "Mostrar Todo" para que todas las cards sean candidatas
-    if (typeof window.cambiarModoVelas === 'function') {
-        window.cambiarModoVelas('mostrar_todo');
-    }
-
-    if (subtag === 'todos') {
-        return;
-    }
-
-    setTimeout(function() {
-        var cards = document.querySelectorAll('#gridProductos .card-dinamica');
-        cards.forEach(function(card) {
-            var dataSubtags = (card.getAttribute('data-subtags') || '').toLowerCase();
-            var valores = dataSubtags.split(/[\s,]+/).map(function(s) { return s.trim(); }).filter(Boolean);
-            var coincide = valores.includes(subtag.toLowerCase());
-            card.classList.toggle('oculto', !coincide);
-            card.classList.remove('paginacion-oculto');
-        });
-        if (typeof window.actualizarPaginacion === 'function') {
-            window.actualizarPaginacion();
-        }
-    }, 60);
 };
 
 // ══════════════════════════════════════════════════════════════════
