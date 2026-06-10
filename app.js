@@ -1,5 +1,5 @@
 // ============================================================
-// YESOS KUKÚMITA — app.js
+// VELAS KUKUMITA — app.js
 // JavaScript extraído y organizado desde index.html.
 // Incluye:
 //   - cargarCatalogo()  : fetch dinámico desde Google Sheets CSV
@@ -163,7 +163,7 @@ function _resetBotonesRed() {
 // Para editar productos: abre el link de Google Sheets y modifica las filas.
 //
 // 🔧 CONFIGURACIÓN — cambia solo esta línea si mueves la hoja:
-var SHEET_ID = '1GoIVWBIyl9s0wYo2qyv0GQwco_xBl3sajDwF0qcnf5o';
+var SHEET_ID = '1jin2wMYingvbPD2csGxIbm5AhulfRvCRvIzAKJTUNMw';
 // ──────────────────────────────────────────────────────────────────────────────
 // COLUMNAS ESPERADAS EN LA HOJA (fila 1 = encabezados, datos desde fila 2):
 //   A(0):  Nombre
@@ -501,14 +501,14 @@ function _actualizarMetaOG(titulo, descripcion, imagen, url) {
     }
     var urlFinal = url || window.location.href;
     setMeta('og-url',         urlFinal);
-    setMeta('og-title',       titulo + ' — Yesos Kukúmita');
-    setMeta('og-description', descripcion || 'Descubre este producto en Yesos Kukúmita.');
+    setMeta('og-title',       titulo + ' — Velas Kukumita');
+    setMeta('og-description', descripcion || 'Descubre este producto en Velas Kukumita.');
     setMeta('og-image',       imagen);
-    setMeta('tw-title',       titulo + ' — Yesos Kukúmita');
-    setMeta('tw-description', descripcion || 'Descubre este producto en Yesos Kukúmita.');
+    setMeta('tw-title',       titulo + ' — Velas Kukumita');
+    setMeta('tw-description', descripcion || 'Descubre este producto en Velas Kukumita.');
     setMeta('tw-image',       imagen);
     // Actualizar también el <title> de la página
-    document.title = titulo + ' — Yesos Kukúmita';
+    document.title = titulo + ' — Velas Kukumita';
 }
 
 function _abrirProductoDesdeURL() {
@@ -546,8 +546,8 @@ function _abrirProductoDesdeURL() {
 // Restaurar meta OG genéricos al cerrar el modal
 (function() {
     var _tituloOriginal    = document.title;
-    var _ogTitleOriginal   = 'Yesos Kukúmita — Arreglos y Productos Artesanales';
-    var _ogDescOriginal    = 'Descubre nuestros hermosos arreglos y productos artesanales de Yesos Kukúmita.';
+    var _ogTitleOriginal   = 'Velas Kukumita — Arreglos y Productos Artesanales';
+    var _ogDescOriginal    = 'Descubre nuestros hermosos arreglos y productos artesanales de Velas Kukumita.';
 
     document.addEventListener('modalProductoCerrado', function() {
         document.title = _tituloOriginal;
@@ -1257,7 +1257,7 @@ if (document.readyState === 'loading') {
         // Botón WhatsApp
         document.getElementById('mpBtnWhatsapp').onclick = () => {
             const texto = encodeURIComponent('Hola, me interesa el producto: ' + nombre + (precioNum ? ' ($' + precioNum + ' MXN)' : ''));
-            window.open('https://wa.me/524434742859?text=' + texto, '_blank');
+            window.open('https://wa.me/524431469161?text=' + texto, '_blank');
         };
 
         // Botón Compartir — actualiza OG y abre submenu
@@ -2620,13 +2620,13 @@ function renderizarResultadosDrawer(lista, titulo) {
 //  FIREBASE CONFIGURACIÓN
 // ═══════════════════════════════════════════
 const firebaseConfig = {
-    apiKey: "AIzaSyAkyPOwwU-HoDAVqNcMKIkiI7pkBhpTRmw",
-    authDomain: "yesos-kukumita.firebaseapp.com",
-    projectId: "yesos-kukumita",
-    storageBucket: "yesos-kukumita.firebasestorage.app",
-    messagingSenderId: "784730667884",
-    appId: "1:784730667884:web:95e50565255b6e1d379149",
-    measurementId: "G-B3ST4NJR1G"
+    apiKey: "AIzaSyBc_AUz1lfgAPFuQd9oKvDYGm1lyrHALGs",
+    authDomain: "velas-kukumita.firebaseapp.com",
+    projectId: "velas-kukumita",
+    storageBucket: "velas-kukumita.firebasestorage.app",
+    messagingSenderId: "76727611900",
+    appId: "1:76727611900:web:8eb54f485d2da99e40c279",
+    measurementId: "G-KPV214PPVY"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -3956,7 +3956,7 @@ function pedirCotizacionWA() {
     var total = carrito.reduce(function(sum, i){ return sum + i.precio * i.cantidad; }, 0);
 
     // Construir mensaje
-    var lineas = ['Hola, me gustaría pedir una cotización de los siguientes productos de Yesos Kukúmita:\n'];
+    var lineas = ['Hola, me gustaría pedir una cotización de los siguientes productos de Velas Kukumita:\n'];
     carrito.forEach(function(item, i) {
         lineas.push((i+1) + '. *' + item.nombre + '*');
         lineas.push('   Cantidad: ' + item.cantidad + ' piezas');
@@ -3971,7 +3971,7 @@ function pedirCotizacionWA() {
     btn.disabled = true;
     btn.textContent = '⏳ Enviando...';
     setTimeout(function() {
-        window.open('https://wa.me/524434742859?text=' + encodeURIComponent(mensaje), '_blank');
+        window.open('https://wa.me/524431469161?text=' + encodeURIComponent(mensaje), '_blank');
         btn.disabled = false;
         btn.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg> Pedir Cotización por WhatsApp';
     }, 800);
@@ -4390,7 +4390,7 @@ function _copiarFallback(texto) {
 }
 
 function compartirEnWhatsApp() {
-    var texto = encodeURIComponent('🕯️ Mira este producto de Yesos Kukúmita: ' + _scNombreActual + '\n' + _scUrlActual);
+    var texto = encodeURIComponent('🕯️ Mira este producto de Velas Kukumita: ' + _scNombreActual + '\n' + _scUrlActual);
     window.open('https://wa.me/?text=' + texto, '_blank');
 }
 
@@ -4564,7 +4564,7 @@ function _cargarFavoritosFirestore(uid) {
         var total       = carrito.reduce(function(s,i){ return s+(i.precio||0)*i.cantidad; }, 0);
         var descuento   = (typeof calcularDescuentoCupones==='function') ? calcularDescuentoCupones(carrito) : 0;
 
-        var lineas = ['Hola, me gustaría pedir una cotización de los siguientes productos de Yesos Kukúmita:\n'];
+        var lineas = ['Hola, me gustaría pedir una cotización de los siguientes productos de Velas Kukumita:\n'];
         carrito.forEach(function(item, i) {
             lineas.push((i+1)+'. *'+item.nombre+'*');
             lineas.push('   Cantidad: '+item.cantidad+' piezas');
@@ -4589,7 +4589,7 @@ function _cargarFavoritosFirestore(uid) {
         var btn = document.getElementById('btnPedirCotizacion');
         if (btn) { btn.disabled=true; btn.textContent='⏳ Enviando...'; }
         setTimeout(function() {
-            window.open('https://wa.me/524434742859?text='+encodeURIComponent(mensaje), '_blank');
+            window.open('https://wa.me/524431469161?text='+encodeURIComponent(mensaje), '_blank');
             if (btn) {
                 btn.disabled = false;
                 btn.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg> Pedir Cotización por WhatsApp';
@@ -4788,6 +4788,55 @@ window.togglePanelEventos = function() {
     var visible = panel.style.display !== 'none';
     panel.style.display = visible ? 'none' : 'block';
     if (icono) icono.textContent = visible ? '▼' : '▲';
+};
+
+// ══════════════════════════════════════════════════════════════════
+// PANEL BUSCA POR FORMA — colapsar / expandir + filtrar por data-subtags
+// ══════════════════════════════════════════════════════════════════
+window.togglePanelFormas = function() {
+    var panel = document.getElementById('panelFormaCarrusel');
+    var icono = document.getElementById('iconToggleFormas');
+    if (!panel) return;
+    var visible = panel.style.display !== 'none';
+    panel.style.display = visible ? 'none' : 'block';
+    if (icono) icono.textContent = visible ? '▼' : '▲';
+};
+
+window.filtrarPorFormaCarrusel = function(btnPulsado, subtag) {
+    // Marcar botón activo
+    document.querySelectorAll('.btn-forma-carrusel').forEach(function(b) {
+        b.classList.remove('activo-forma');
+        // Restaurar estilo "Ver Todo" si corresponde
+        if (b.getAttribute('data-subtag') === 'todos') {
+            b.style.background = '';
+            b.style.color = '';
+            b.style.borderColor = '';
+        }
+    });
+    btnPulsado.classList.add('activo-forma');
+
+    // Activar modo "Mostrar Todo" para que todas las cards sean candidatas
+    if (typeof window.cambiarModoVelas === 'function') {
+        window.cambiarModoVelas('mostrar_todo');
+    }
+
+    if (subtag === 'todos') {
+        return;
+    }
+
+    setTimeout(function() {
+        var cards = document.querySelectorAll('#gridProductos .card-dinamica');
+        cards.forEach(function(card) {
+            var dataSubtags = (card.getAttribute('data-subtags') || '').toLowerCase();
+            var valores = dataSubtags.split(/[\s,]+/).map(function(s) { return s.trim(); }).filter(Boolean);
+            var coincide = valores.includes(subtag.toLowerCase());
+            card.classList.toggle('oculto', !coincide);
+            card.classList.remove('paginacion-oculto');
+        });
+        if (typeof window.actualizarPaginacion === 'function') {
+            window.actualizarPaginacion();
+        }
+    }, 60);
 };
 
 // ══════════════════════════════════════════════════════════════════
