@@ -2192,7 +2192,7 @@ function actualizarEstadoSesionDrawer() {
     document.getElementById('drawerPerfilBloque').style.display = conSesion ? 'flex' : 'none';
     if (conSesion) {
         const foto = localStorage.getItem('velas-foto-perfil');
-        document.getElementById('drawerAvatar').src = foto || 'imagenes/perfil-yesoskukumita.webp';
+        if (foto) document.getElementById('drawerAvatar').src = foto;
         const nombre = localStorage.getItem('velas-nombre-usuario') || 'Mi cuenta';
         document.getElementById('drawerNombreUsuario').textContent = nombre;
     }
@@ -2209,7 +2209,7 @@ function cerrarSesion() {
 // ═══ PANTALLA PERFIL COMPLETA ═══
 function abrirPantallaPerfil() {
     const foto = localStorage.getItem('velas-foto-perfil');
-    document.getElementById('pantallaAvatar').src = foto || 'imagenes/perfil-yesoskukumita.webp';
+    if (foto) document.getElementById('pantallaAvatar').src = foto;
     document.getElementById('pantallaUsuarioNombre').textContent =
         localStorage.getItem('velas-nombre-usuario') || 'Mi cuenta';
     document.getElementById('pantallaPerfil').classList.add('activo');
