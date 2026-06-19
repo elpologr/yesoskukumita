@@ -164,6 +164,13 @@ function _resetBotonesRed() {
 //
 // 🔧 CONFIGURACIÓN — cambia solo esta línea si mueves la hoja:
 var SHEET_ID = '1GoIVWBIyl9s0wYo2qyv0GQwco_xBl3sajDwF0qcnf5o';
+
+// 🔧 URL del Cloudflare Worker para compartir en redes sociales (Facebook, etc.)
+// Cuando instales el worker, reemplaza esta URL con la que te asigne Cloudflare.
+// Ejemplo: 'https://kukumita-og.TU-USUARIO.workers.dev'
+// Mientras no lo tengas configurado, deja el valor vacío ('') y funcionará
+// como antes (sin imagen en Facebook).
+var OG_WORKER_URL = 'https://cool-river-013e.dulceprincesa086.workers.dev';
 // ──────────────────────────────────────────────────────────────────────────────
 // COLUMNAS ESPERADAS EN LA HOJA (fila 1 = encabezados, datos desde fila 2):
 //   A(0):  Nombre
@@ -1263,10 +1270,11 @@ if (document.readyState === 'loading') {
         // Botón Compartir — actualiza OG y abre submenu
         document.getElementById('mpBtnCompartir').onclick = (e) => {
             e.stopPropagation();
-            const url = window.location.href.split('?')[0] + '?producto=' + encodeURIComponent(nombre);
+            const url    = window.location.href.split('?')[0] + '?producto=' + encodeURIComponent(nombre);
+            const urlOG  = (typeof _urlOG === 'function') ? _urlOG(url) : url;
             // Actualizar meta OG con este producto antes de compartir
             if (typeof _actualizarMetaOG === 'function') {
-                _actualizarMetaOG(nombre, descripcion, galeriaImagenes[0] || '', url);
+                _actualizarMetaOG(nombre, descripcion, galeriaImagenes[0] || '', urlOG);
             }
             abrirSubmenuCompartir(url, nombre);
         };
@@ -4389,14 +4397,32 @@ function _copiarFallback(texto) {
     document.body.removeChild(ta);
 }
 
+// ── Helper: devuelve la URL del Cloudflare Worker si está configurado,
+//    o la URL normal de la página en caso contrario.
+//    El worker sirve las meta tags OG correctas para que Facebook
+//    muestre la imagen del producto al pegar el link.
+function _urlOG(urlPaginaReal) {
+    if (!OG_WORKER_URL || !OG_WORKER_URL.trim()) return urlPaginaReal;
+    try {
+        var params = new URL(urlPaginaReal).searchParams;
+        var producto = params.get('producto');
+        if (!producto) return urlPaginaReal;
+        return OG_WORKER_URL.replace(/\/$/, '') + '/?producto=' + encodeURIComponent(producto);
+    } catch(e) {
+        return urlPaginaReal;
+    }
+}
+
 function compartirEnWhatsApp() {
     var texto = encodeURIComponent('🕯️ Mira este producto de Yesos Kukúmita: ' + _scNombreActual + '\n' + _scUrlActual);
     window.open('https://wa.me/?text=' + texto, '_blank');
 }
 
 function compartirEnFacebook() {
-    var url = encodeURIComponent(_scUrlActual);
-    window.open('https://www.facebook.com/sharer/sharer.php?u=' + url, '_blank', 'width=600,height=400');
+    // Usamos la URL del worker (si está configurado) para que Facebook
+    // lea las meta tags OG y muestre la imagen del producto.
+    var urlParaFB = encodeURIComponent(_urlOG(_scUrlActual));
+    window.open('https://www.facebook.com/sharer/sharer.php?u=' + urlParaFB, '_blank', 'width=600,height=400');
 }
 
 function compartirEnInstagram() {
