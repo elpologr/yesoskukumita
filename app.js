@@ -4376,14 +4376,17 @@ function cerrarSubmenuCompartir() {
 }
 
 function copiarLinkProducto() {
+    // Usar la URL del Worker (si está configurado) para que al pegar en Facebook
+    // se muestre la imagen del producto en lugar de la imagen genérica del sitio.
+    var urlACopiar = (typeof _urlOG === 'function') ? _urlOG(_scUrlActual) : _scUrlActual;
     if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(_scUrlActual).then(function() {
+        navigator.clipboard.writeText(urlACopiar).then(function() {
             mostrarToast('✅ ¡Link copiado al portapapeles!');
         }).catch(function() {
-            _copiarFallback(_scUrlActual);
+            _copiarFallback(urlACopiar);
         });
     } else {
-        _copiarFallback(_scUrlActual);
+        _copiarFallback(urlACopiar);
     }
 }
 
