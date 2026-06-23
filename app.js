@@ -1833,9 +1833,9 @@ if (document.readyState === 'loading') {
         const rawTipos = (card.getAttribute('data-tipos') || card.getAttribute('data-tipo') || '');
         const tipos = rawTipos.toLowerCase().replace(/^"+|"+$/g, '').split(/[|,]/).map(s => s.trim().replace(/^"+|"+$/g, '')).filter(Boolean);
         const variantes = {
-            'producto':      ['producto','productos'],
+            'producto':      ['producto','productos','paquete','paquetes'],
             'arreglo':       ['arreglo','arreglos'],
-            'decoracion':    ['decoracion','decoraciones','aditamento','aditamentos'],
+            'decoracion':    ['decoracion','decoraciones','aditamento','aditamentos','centro de mesa','centro_de_mesa','centrodemesa'],
             'etiqueta':      ['etiqueta','etiquetas']
         };
         return buscar.some(function(b) {
@@ -3337,8 +3337,13 @@ var TIPO_INFO = {
     aditamentos:  { cls: 'aditamento', label: '✨ Aditamento' },
     decoracion:   { cls: 'decoracion', label: '🎀 Decoración' },
     decoraciones: { cls: 'decoracion', label: '🎀 Decoración' },
-    etiqueta:     { cls: 'etiqueta',   label: '🏷️ Etiqueta' },
-    etiquetas:    { cls: 'etiqueta',   label: '🏷️ Etiqueta' }
+    etiqueta:        { cls: 'etiqueta',      label: '🏷️ Etiqueta' },
+    etiquetas:       { cls: 'etiqueta',      label: '🏷️ Etiqueta' },
+    'centro de mesa':{ cls: 'centro-mesa',   label: '🌸 Centro de Mesa' },
+    'centro_de_mesa':{ cls: 'centro-mesa',   label: '🌸 Centro de Mesa' },
+    centrodemesa:    { cls: 'centro-mesa',   label: '🌸 Centro de Mesa' },
+    paquete:         { cls: 'paquete',       label: '🎁 Paquete' },
+    paquetes:        { cls: 'paquete',       label: '🎁 Paquete' }
 };
 
 // ── Inyectar etiqueta principal (sobre el título) y sub-etiquetas (sobre evento) ──
