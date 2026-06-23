@@ -750,14 +750,21 @@ if (document.readyState === 'loading') {
         });
     }
 
+    var _primeraVez = true;
+
     function actualizarPaginacion() {
         tarjetasVisibles = obtenerTarjetasVisibles();
-        // Restaurar página desde URL (#pagina=N) si es válida; si no, ir a 1
-        var hash = window.location.hash || '';
-        var match = hash.match(/pagina=(\d+)/);
-        var paginaGuardada = match ? parseInt(match[1]) : 1;
-        var totalPags = Math.ceil(tarjetasVisibles.length / POR_PAGINA);
-        var paginaInicial = (paginaGuardada > 1 && paginaGuardada <= totalPags) ? paginaGuardada : 1;
+        var paginaInicial = 1;
+        // Solo restaurar la página guardada en el hash durante la carga inicial,
+        // no al cambiar filtros (para evitar mostrar páginas desincronizadas).
+        if (_primeraVez) {
+            var hash = window.location.hash || '';
+            var match = hash.match(/pagina=(\d+)/);
+            var paginaGuardada = match ? parseInt(match[1]) : 1;
+            var totalPags = Math.ceil(tarjetasVisibles.length / POR_PAGINA);
+            paginaInicial = (paginaGuardada > 1 && paginaGuardada <= totalPags) ? paginaGuardada : 1;
+            _primeraVez = false;
+        }
         mostrarPagina(paginaInicial);
     }
 
