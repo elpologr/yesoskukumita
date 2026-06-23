@@ -764,14 +764,8 @@ if (document.readyState === 'loading') {
         var btnActivo = document.querySelector('.btn-modo-velas.activo');
         var mapaIDs = {
             'btnModoTodosProductos':  'mostrar_todo',
-            'btnModoFiguras':         'figuras',
-            'btnModoBases':           'bases',
-            'btnModoMacetas':         'macetas',
-            'btnModoTazones':         'tazones',
-            'btnModoPortaVelas':      'portavelas',
-            'btnModoPortaInciensos':  'portainciensos',
             'btnModoArreglos':        'arreglos',
-            'btnModoAditamentos':     'aditamentos',
+            'btnModoPaquetes':        'paquetes',
             'btnModoEtiquetas':       'etiquetas'
         };
         var modoActual = btnActivo ? (mapaIDs[btnActivo.id] || 'mostrar_todo') : 'mostrar_todo';
@@ -1649,43 +1643,25 @@ if (document.readyState === 'loading') {
 
     // ===== CAMBIO DE MODO: ARREGLOS / TODOS LOS PRODUCTOS =====
     function cambiarModoVelas(modo) {
-        // Botones principales
-        const btnTodosProductos    = document.getElementById('btnModoTodosProductos');
-        const btnFiguras           = document.getElementById('btnModoFiguras');
-        const btnBases             = document.getElementById('btnModoBases');
-        const btnMacetas           = document.getElementById('btnModoMacetas');
-        const btnTazones           = document.getElementById('btnModoTazones');
-        const btnPortaVelas        = document.getElementById('btnModoPortaVelas');
-        const btnPortaInciensos    = document.getElementById('btnModoPortaInciensos');
-        const btnMas               = document.getElementById('btnModoMas');
-        // Botones del submenú Más
-        const btnArreglos          = document.getElementById('btnModoArreglos');
-        const btnAditamentos       = document.getElementById('btnModoAditamentos');
-        const btnEtiquetas         = document.getElementById('btnModoEtiquetas');
+        // Botones
+        const btnTodosProductos = document.getElementById('btnModoTodosProductos');
+        const btnArreglos       = document.getElementById('btnModoArreglos');
+        const btnPaquetes       = document.getElementById('btnModoPaquetes');
+        const btnEtiquetas      = document.getElementById('btnModoEtiquetas');
 
         const panelArr  = document.getElementById('panelArreglos');
         const panelEtiq = document.getElementById('panelEtiquetas');
-        const panelDeco = document.getElementById('panelDecoraciones');
         const panelTod  = document.getElementById('panelTodos');
         const bloqueArr = document.getElementById('bloqueFiltroPrecioArreglos');
         const bloqueTod = document.getElementById('bloqueFiltroPrecioTodos');
 
         // Desactivar todos los botones y paneles
-        [btnTodosProductos, btnFiguras, btnBases, btnMacetas, btnTazones,
-         btnPortaVelas, btnPortaInciensos, btnMas, btnArreglos, btnAditamentos, btnEtiquetas]
+        [btnTodosProductos, btnArreglos, btnPaquetes, btnEtiquetas]
             .forEach(b => b && b.classList.remove('activo'));
-        [panelArr, panelEtiq, panelDeco, panelTod]
+        [panelArr, panelEtiq, panelTod]
             .forEach(p => p && p.classList.remove('visible'));
         if (bloqueArr) bloqueArr.style.display = 'none';
         if (bloqueTod) bloqueTod.style.display = 'none';
-
-        // Cerrar submenú Más si se elige un modo fuera de él
-        const modosMas = ['arreglos', 'aditamentos', 'etiquetas'];
-        if (!modosMas.includes(modo)) {
-            const submenu = document.getElementById('submenuCategoriasMas');
-            if (submenu) submenu.style.display = 'none';
-            if (btnMas) btnMas.classList.remove('activo');
-        }
 
         if (modo === 'mostrar_todo') {
             if (btnTodosProductos) btnTodosProductos.classList.add('activo');
@@ -1694,46 +1670,26 @@ if (document.readyState === 'loading') {
             aplicarFiltrosUnificados('mostrar_todo');
         } else if (modo === 'arreglos') {
             if (btnArreglos) btnArreglos.classList.add('activo');
-            if (btnMas) btnMas.classList.add('activo');
             if (bloqueArr) bloqueArr.style.display = 'block';
             if (panelArr) panelArr.classList.add('visible');
             aplicarFiltrosArreglos();
-        } else if (modo === 'etiquetas') {
-            if (btnEtiquetas) btnEtiquetas.classList.add('activo');
-            if (btnMas) btnMas.classList.add('activo');
-            if (panelEtiq) panelEtiq.classList.add('visible');
-            aplicarFiltrosUnificados('etiquetas');
-        } else if (modo === 'aditamentos') {
-            if (btnAditamentos) btnAditamentos.classList.add('activo');
-            if (btnMas) btnMas.classList.add('activo');
-            if (panelDeco) panelDeco.classList.add('visible');
-            aplicarFiltrosUnificados('aditamentos');
-        } else {
-            // Modos: figuras, bases, macetas, tazones, portavelas, portainciensos
-            const mapaBtns = {
-                figuras:        btnFiguras,
-                bases:          btnBases,
-                macetas:        btnMacetas,
-                tazones:        btnTazones,
-                portavelas:     btnPortaVelas,
-                portainciensos: btnPortaInciensos
-            };
-            if (mapaBtns[modo]) mapaBtns[modo].classList.add('activo');
+        } else if (modo === 'paquetes') {
+            if (btnPaquetes) btnPaquetes.classList.add('activo');
             if (panelTod) panelTod.classList.add('visible');
             if (bloqueTod) bloqueTod.style.display = 'block';
-            aplicarFiltrosUnificados(modo);
+            aplicarFiltrosUnificados('paquetes');
+        } else if (modo === 'etiquetas') {
+            if (btnEtiquetas) btnEtiquetas.classList.add('activo');
+            if (panelEtiq) panelEtiq.classList.add('visible');
+            aplicarFiltrosUnificados('etiquetas');
+        } else {
+            // Fallback: mostrar todo
+            if (btnTodosProductos) btnTodosProductos.classList.add('activo');
+            if (panelTod) panelTod.classList.add('visible');
+            if (bloqueTod) bloqueTod.style.display = 'block';
+            aplicarFiltrosUnificados('mostrar_todo');
         }
     }
-
-    function toggleCategoriasMas() {
-        const submenu = document.getElementById('submenuCategoriasMas');
-        const btnMas  = document.getElementById('btnModoMas');
-        if (!submenu) return;
-        const abierto = submenu.style.display !== 'none';
-        submenu.style.display = abierto ? 'none' : 'flex';
-        if (btnMas) btnMas.classList.toggle('activo', !abierto);
-    }
-    window.toggleCategoriasMas = toggleCategoriasMas;
 
     // Exponer funciones al scope global para que el HTML pueda llamarlas
     window.cambiarModoVelas         = cambiarModoVelas;
@@ -1875,11 +1831,12 @@ if (document.readyState === 'loading') {
         const rawTipos = (card.getAttribute('data-tipos') || card.getAttribute('data-tipo') || '');
         const tipos = rawTipos.toLowerCase().replace(/^"+|"+$/g, '').split(/[|,]/).map(s => s.trim().replace(/^"+|"+$/g, '')).filter(Boolean);
         const variantes = {
-            'producto':        ['producto','productos','paquete','paquetes'],
+            'producto':        ['producto','productos'],
             'arreglo':         ['arreglo','arreglos'],
+            'paquetes':        ['paquete','paquetes'],
             'decoracion':      ['decoracion','decoraciones','aditamento','aditamentos','centro de mesa','centro_de_mesa','centrodemesa'],
             'etiqueta':        ['etiqueta','etiquetas'],
-            // Nuevas categorías de etiquetaprincipal
+            // Categorías de etiquetaprincipal (col G)
             'figuras':         ['figura','figuras'],
             'bases':           ['base','bases'],
             'macetas':         ['maceta','macetas'],
@@ -1908,7 +1865,7 @@ if (document.readyState === 'loading') {
         const eventoActivo = filtros.evento || 'todos';
 
         // Modos que filtran por etiquetaprincipal directamente
-        const modosPorEtiqueta = ['figuras','bases','macetas','tazones','portavelas','portainciensos','aditamentos'];
+        const modosPorEtiqueta = ['paquetes'];
 
         document.querySelectorAll('.card-dinamica').forEach(card => {
             const formaCard  = (card.dataset.forma  || '').toLowerCase();
@@ -4829,14 +4786,8 @@ function _cargarFavoritosFirestore(uid) {
         if (btnActivo) {
             var modos = {
                 'btnModoTodosProductos':  'mostrar_todo',
-                'btnModoFiguras':         'figuras',
-                'btnModoBases':           'bases',
-                'btnModoMacetas':         'macetas',
-                'btnModoTazones':         'tazones',
-                'btnModoPortaVelas':      'portavelas',
-                'btnModoPortaInciensos':  'portainciensos',
                 'btnModoArreglos':        'arreglos',
-                'btnModoAditamentos':     'aditamentos',
+                'btnModoPaquetes':        'paquetes',
                 'btnModoEtiquetas':       'etiquetas'
             };
             var modo = modos[btnActivo.id] || 'mostrar_todo';
@@ -4894,7 +4845,7 @@ window.togglePanelFormas = function() {
     if (icono) icono.textContent = visible ? '▼' : '▲';
 };
 
-// Filtro de forma global usando columna SubEtiqueta (data-subtags)
+// Filtro de forma global usando columna EtiquetaPrincipal (data-tipos, col G)
 var formaCarruselActiva = 'todos';
 
 window.seleccionarFormaCarrusel = function(btn, forma) {
@@ -4921,8 +4872,8 @@ function aplicarFiltroFormaCarrusel() {
         if (formaCarruselActiva === 'todos') {
             card.classList.remove('oculto-forma-carrusel');
         } else {
-            var subtags = (card.getAttribute('data-subtags') || '').toLowerCase().split('|').map(function(s){ return s.trim(); });
-            var coincide = subtags.some(function(t) { return t === formaCarruselActiva; });
+            var tipos = (card.getAttribute('data-tipos') || '').toLowerCase().split('|').map(function(s){ return s.trim(); });
+            var coincide = tipos.some(function(t) { return t === formaCarruselActiva; });
             card.classList.toggle('oculto-forma-carrusel', !coincide);
         }
     });

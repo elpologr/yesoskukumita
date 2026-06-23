@@ -1097,21 +1097,10 @@
             <div class="selector-modo-fila-top">
                 <button class="btn-modo-velas btn-modo-mostrar-todo activo" id="btnModoTodosProductos" onclick="cambiarModoVelas('mostrar_todo')">Mostrar Todo</button>
             </div>
-            <!-- Fila inferior: 6 botones principales de categoría -->
+            <!-- Fila inferior: 3 botones principales de categoría -->
             <div class="selector-modo-velas" id="selectorModoVelas">
-                <button class="btn-modo-velas btn-modo-figuras" id="btnModoFiguras" onclick="cambiarModoVelas('figuras')">🗿 Figuras</button>
-                <button class="btn-modo-velas btn-modo-bases" id="btnModoBases" onclick="cambiarModoVelas('bases')">🏺 Bases</button>
-                <button class="btn-modo-velas btn-modo-macetas" id="btnModoMacetas" onclick="cambiarModoVelas('macetas')">🪴 Macetas</button>
-                <button class="btn-modo-velas btn-modo-tazones" id="btnModoTazones" onclick="cambiarModoVelas('tazones')">🥣 Tazones</button>
-                <button class="btn-modo-velas btn-modo-portavelas" id="btnModoPortaVelas" onclick="cambiarModoVelas('portavelas')">🕯️ Porta Velas</button>
-                <button class="btn-modo-velas btn-modo-portainciensos" id="btnModoPortaInciensos" onclick="cambiarModoVelas('portainciensos')">🪔 Porta Inciensos</button>
-                <!-- Botón Más y su submenú desplegable -->
-                <button class="btn-modo-velas btn-modo-mas" id="btnModoMas" onclick="toggleCategoriasMas()">➕ Más</button>
-            </div>
-            <!-- Submenú de categorías "Más" -->
-            <div class="selector-modo-mas-submenu" id="submenuCategoriasMas" style="display:none;">
                 <button class="btn-modo-velas btn-modo-arreglos" id="btnModoArreglos" onclick="cambiarModoVelas('arreglos')">🕯️ Arreglos</button>
-                <button class="btn-modo-velas btn-modo-aditamentos" id="btnModoAditamentos" onclick="cambiarModoVelas('aditamentos')">✨ Aditamentos</button>
+                <button class="btn-modo-velas btn-modo-paquetes" id="btnModoPaquetes" onclick="cambiarModoVelas('paquetes')">📦 Paquetes</button>
                 <button class="btn-modo-velas btn-modo-etiquetas" id="btnModoEtiquetas" onclick="cambiarModoVelas('etiquetas')">🏷️ Etiquetas</button>
             </div>
         </div>
@@ -1161,12 +1150,9 @@
             <div style="height:10px;"></div>
             <div style="display:flex; flex-wrap:wrap; gap:9px; justify-content:center; padding:4px 12px 10px;">
                 <button class="btn-evento-carrusel btn-forma-carrusel activo-evento" data-forma="todos" onclick="seleccionarFormaCarrusel(this,'todos')" style="background:#1a1a1a; color:#fff; border-color:#1a1a1a;">Ver Todo</button>
-                <button class="btn-evento-carrusel btn-forma-carrusel" data-forma="figura" onclick="seleccionarFormaCarrusel(this,'figura')">🗿 Figuras</button>
-                <button class="btn-evento-carrusel btn-forma-carrusel" data-forma="base" onclick="seleccionarFormaCarrusel(this,'base')">🏺 Bases</button>
-                <button class="btn-evento-carrusel btn-forma-carrusel" data-forma="tazon" onclick="seleccionarFormaCarrusel(this,'tazon')">🥣 Tazones</button>
-                <button class="btn-evento-carrusel btn-forma-carrusel" data-forma="maceta" onclick="seleccionarFormaCarrusel(this,'maceta')">🪴 Macetas</button>
-                <button class="btn-evento-carrusel btn-forma-carrusel" data-forma="portavelas" onclick="seleccionarFormaCarrusel(this,'portavelas')">🕯️ Porta Velas</button>
-                <button class="btn-evento-carrusel btn-forma-carrusel" data-forma="religioso" onclick="seleccionarFormaCarrusel(this,'religioso')">🙏 Religioso</button>
+                <button class="btn-evento-carrusel btn-forma-carrusel" data-forma="arreglo" onclick="seleccionarFormaCarrusel(this,'arreglo')">🕯️ Arreglos</button>
+                <button class="btn-evento-carrusel btn-forma-carrusel" data-forma="paquete" onclick="seleccionarFormaCarrusel(this,'paquete')">📦 Paquetes</button>
+                <button class="btn-evento-carrusel btn-forma-carrusel" data-forma="etiqueta" onclick="seleccionarFormaCarrusel(this,'etiqueta')">🏷️ Etiquetas</button>
             </div>
             </div><!-- /panelFormaCarrusel -->
         </div>
