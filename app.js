@@ -763,11 +763,16 @@ if (document.readyState === 'loading') {
         // Detectar el modo activo antes de que el catálogo cargara
         var btnActivo = document.querySelector('.btn-modo-velas.activo');
         var mapaIDs = {
-            'btnModoTodosProductos': 'mostrar_todo',
-            'btnModoTodos':          'todos',
-            'btnModoArreglos':       'arreglos',
-            'btnModoDecoraciones':   'decoraciones',
-            'btnModoEtiquetas':      'etiquetas'
+            'btnModoTodosProductos':  'mostrar_todo',
+            'btnModoFiguras':         'figuras',
+            'btnModoBases':           'bases',
+            'btnModoMacetas':         'macetas',
+            'btnModoTazones':         'tazones',
+            'btnModoPortaVelas':      'portavelas',
+            'btnModoPortaInciensos':  'portainciensos',
+            'btnModoArreglos':        'arreglos',
+            'btnModoAditamentos':     'aditamentos',
+            'btnModoEtiquetas':       'etiquetas'
         };
         var modoActual = btnActivo ? (mapaIDs[btnActivo.id] || 'mostrar_todo') : 'mostrar_todo';
 
@@ -1264,7 +1269,7 @@ if (document.readyState === 'loading') {
         // Botón WhatsApp
         document.getElementById('mpBtnWhatsapp').onclick = () => {
             const texto = encodeURIComponent('Hola, me interesa el producto: ' + nombre + (precioNum ? ' ($' + precioNum + ' MXN)' : ''));
-            window.open('https://wa.me/524434742859?text=' + texto, '_blank');
+            window.open('https://wa.me/524439608034?text=' + texto, '_blank');
         };
 
         // Botón Compartir — actualiza OG y abre submenu
@@ -1644,54 +1649,91 @@ if (document.readyState === 'loading') {
 
     // ===== CAMBIO DE MODO: ARREGLOS / TODOS LOS PRODUCTOS =====
     function cambiarModoVelas(modo) {
-        const btnArreglos       = document.getElementById('btnModoArreglos');
-        const btnEtiquetas      = document.getElementById('btnModoEtiquetas');
-        const btnDecoraciones   = document.getElementById('btnModoDecoraciones');
-        const btnTodos          = document.getElementById('btnModoTodos');
-        const btnTodosProductos = document.getElementById('btnModoTodosProductos');
-        const panelArr          = document.getElementById('panelArreglos');
-        const panelEtiq         = document.getElementById('panelEtiquetas');
-        const panelDeco         = document.getElementById('panelDecoraciones');
-        const panelTod          = document.getElementById('panelTodos');
-        const bloqueArr         = document.getElementById('bloqueFiltroPrecioArreglos');
-        const bloqueTod         = document.getElementById('bloqueFiltroPrecioTodos');
+        // Botones principales
+        const btnTodosProductos    = document.getElementById('btnModoTodosProductos');
+        const btnFiguras           = document.getElementById('btnModoFiguras');
+        const btnBases             = document.getElementById('btnModoBases');
+        const btnMacetas           = document.getElementById('btnModoMacetas');
+        const btnTazones           = document.getElementById('btnModoTazones');
+        const btnPortaVelas        = document.getElementById('btnModoPortaVelas');
+        const btnPortaInciensos    = document.getElementById('btnModoPortaInciensos');
+        const btnMas               = document.getElementById('btnModoMas');
+        // Botones del submenú Más
+        const btnArreglos          = document.getElementById('btnModoArreglos');
+        const btnAditamentos       = document.getElementById('btnModoAditamentos');
+        const btnEtiquetas         = document.getElementById('btnModoEtiquetas');
+
+        const panelArr  = document.getElementById('panelArreglos');
+        const panelEtiq = document.getElementById('panelEtiquetas');
+        const panelDeco = document.getElementById('panelDecoraciones');
+        const panelTod  = document.getElementById('panelTodos');
+        const bloqueArr = document.getElementById('bloqueFiltroPrecioArreglos');
+        const bloqueTod = document.getElementById('bloqueFiltroPrecioTodos');
 
         // Desactivar todos los botones y paneles
-        [btnArreglos, btnEtiquetas, btnDecoraciones, btnTodos, btnTodosProductos]
+        [btnTodosProductos, btnFiguras, btnBases, btnMacetas, btnTazones,
+         btnPortaVelas, btnPortaInciensos, btnMas, btnArreglos, btnAditamentos, btnEtiquetas]
             .forEach(b => b && b.classList.remove('activo'));
         [panelArr, panelEtiq, panelDeco, panelTod]
             .forEach(p => p && p.classList.remove('visible'));
-        // Ocultar ambos bloques de precio
         if (bloqueArr) bloqueArr.style.display = 'none';
         if (bloqueTod) bloqueTod.style.display = 'none';
 
-        if (modo === 'arreglos') {
+        // Cerrar submenú Más si se elige un modo fuera de él
+        const modosMas = ['arreglos', 'aditamentos', 'etiquetas'];
+        if (!modosMas.includes(modo)) {
+            const submenu = document.getElementById('submenuCategoriasMas');
+            if (submenu) submenu.style.display = 'none';
+            if (btnMas) btnMas.classList.remove('activo');
+        }
+
+        if (modo === 'mostrar_todo') {
+            if (btnTodosProductos) btnTodosProductos.classList.add('activo');
+            if (panelTod) panelTod.classList.add('visible');
+            if (bloqueTod) bloqueTod.style.display = 'block';
+            aplicarFiltrosUnificados('mostrar_todo');
+        } else if (modo === 'arreglos') {
             if (btnArreglos) btnArreglos.classList.add('activo');
+            if (btnMas) btnMas.classList.add('activo');
             if (bloqueArr) bloqueArr.style.display = 'block';
             if (panelArr) panelArr.classList.add('visible');
             aplicarFiltrosArreglos();
         } else if (modo === 'etiquetas') {
             if (btnEtiquetas) btnEtiquetas.classList.add('activo');
+            if (btnMas) btnMas.classList.add('activo');
             if (panelEtiq) panelEtiq.classList.add('visible');
             aplicarFiltrosUnificados('etiquetas');
-        } else if (modo === 'decoraciones') {
-            if (btnDecoraciones) btnDecoraciones.classList.add('activo');
+        } else if (modo === 'aditamentos') {
+            if (btnAditamentos) btnAditamentos.classList.add('activo');
+            if (btnMas) btnMas.classList.add('activo');
             if (panelDeco) panelDeco.classList.add('visible');
-            aplicarFiltrosUnificados('decoraciones');
-        } else if (modo === 'mostrar_todo') {
-            // Mostrar Todo: activa sólo el botón superior y muestra absolutamente todo
-            if (btnTodosProductos) btnTodosProductos.classList.add('activo');
-            if (panelTod) panelTod.classList.add('visible');
-            if (bloqueTod) bloqueTod.style.display = 'block';
-            aplicarFiltrosUnificados('mostrar_todo');
+            aplicarFiltrosUnificados('aditamentos');
         } else {
-            // 'todos' = 🛍️ Productos (solo tipo producto)
-            if (btnTodos) btnTodos.classList.add('activo');
+            // Modos: figuras, bases, macetas, tazones, portavelas, portainciensos
+            const mapaBtns = {
+                figuras:        btnFiguras,
+                bases:          btnBases,
+                macetas:        btnMacetas,
+                tazones:        btnTazones,
+                portavelas:     btnPortaVelas,
+                portainciensos: btnPortaInciensos
+            };
+            if (mapaBtns[modo]) mapaBtns[modo].classList.add('activo');
             if (panelTod) panelTod.classList.add('visible');
             if (bloqueTod) bloqueTod.style.display = 'block';
-            aplicarFiltrosUnificados('todos');
+            aplicarFiltrosUnificados(modo);
         }
     }
+
+    function toggleCategoriasMas() {
+        const submenu = document.getElementById('submenuCategoriasMas');
+        const btnMas  = document.getElementById('btnModoMas');
+        if (!submenu) return;
+        const abierto = submenu.style.display !== 'none';
+        submenu.style.display = abierto ? 'none' : 'flex';
+        if (btnMas) btnMas.classList.toggle('activo', !abierto);
+    }
+    window.toggleCategoriasMas = toggleCategoriasMas;
 
     // Exponer funciones al scope global para que el HTML pueda llamarlas
     window.cambiarModoVelas         = cambiarModoVelas;
@@ -1833,10 +1875,18 @@ if (document.readyState === 'loading') {
         const rawTipos = (card.getAttribute('data-tipos') || card.getAttribute('data-tipo') || '');
         const tipos = rawTipos.toLowerCase().replace(/^"+|"+$/g, '').split(/[|,]/).map(s => s.trim().replace(/^"+|"+$/g, '')).filter(Boolean);
         const variantes = {
-            'producto':      ['producto','productos','paquete','paquetes'],
-            'arreglo':       ['arreglo','arreglos'],
-            'decoracion':    ['decoracion','decoraciones','aditamento','aditamentos','centro de mesa','centro_de_mesa','centrodemesa'],
-            'etiqueta':      ['etiqueta','etiquetas']
+            'producto':        ['producto','productos','paquete','paquetes'],
+            'arreglo':         ['arreglo','arreglos'],
+            'decoracion':      ['decoracion','decoraciones','aditamento','aditamentos','centro de mesa','centro_de_mesa','centrodemesa'],
+            'etiqueta':        ['etiqueta','etiquetas'],
+            // Nuevas categorías de etiquetaprincipal
+            'figuras':         ['figura','figuras'],
+            'bases':           ['base','bases'],
+            'macetas':         ['maceta','macetas'],
+            'tazones':         ['tazon','tazones','tazón','tazónes'],
+            'portavelas':      ['porta vela','porta velas','portavela','portavelas','porta_vela','porta_velas'],
+            'portainciensos':  ['porta incienso','porta inciensos','portaincienso','portainciensos','porta_incienso','porta_inciensos'],
+            'aditamentos':     ['aditamento','aditamentos']
         };
         return buscar.some(function(b) {
             const lista = variantes[b] || [b];
@@ -1857,6 +1907,9 @@ if (document.readyState === 'loading') {
         const formaActiva  = filtros.forma  || 'todos';
         const eventoActivo = filtros.evento || 'todos';
 
+        // Modos que filtran por etiquetaprincipal directamente
+        const modosPorEtiqueta = ['figuras','bases','macetas','tazones','portavelas','portainciensos','aditamentos'];
+
         document.querySelectorAll('.card-dinamica').forEach(card => {
             const formaCard  = (card.dataset.forma  || '').toLowerCase();
             const eventoCard = (card.dataset.evento || '').toLowerCase();
@@ -1869,6 +1922,9 @@ if (document.readyState === 'loading') {
             // Si hay texto de búsqueda activo, ignorar el filtro de tipo y buscar en TODOS los productos
             if (textoBusq) {
                 card.classList.toggle('oculto', !okNombre);
+            } else if (modosPorEtiqueta.includes(panel)) {
+                // Filtrar por etiquetaprincipal usando tieneTipo con el nombre del modo
+                card.classList.toggle('oculto', !tieneTipo(card, panel));
             } else if (panel === 'decoraciones') {
                 card.classList.toggle('oculto', !tieneTipo(card, 'decoracion'));
             } else if (panel === 'etiquetas') {
@@ -1886,7 +1942,7 @@ if (document.readyState === 'loading') {
             } else if (panel === 'mostrar_todo') {
                 card.classList.toggle('oculto', false); // sin texto: mostrar todo
             } else {
-                // panel === 'todos' (🛍️ Productos): muestra solo los que tienen tipo 'producto'
+                // panel === 'todos' (Productos): muestra solo los que tienen tipo 'producto'
                 card.classList.toggle('oculto', !(tieneTipo(card, 'producto') && okForma && okEvento));
             }
         });
@@ -3984,7 +4040,7 @@ function pedirCotizacionWA() {
     btn.disabled = true;
     btn.textContent = '⏳ Enviando...';
     setTimeout(function() {
-        window.open('https://wa.me/524434742859?text=' + encodeURIComponent(mensaje), '_blank');
+        window.open('https://wa.me/524439608034?text=' + encodeURIComponent(mensaje), '_blank');
         btn.disabled = false;
         btn.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg> Pedir Cotización por WhatsApp';
     }, 800);
@@ -4623,7 +4679,7 @@ function _cargarFavoritosFirestore(uid) {
         var btn = document.getElementById('btnPedirCotizacion');
         if (btn) { btn.disabled=true; btn.textContent='⏳ Enviando...'; }
         setTimeout(function() {
-            window.open('https://wa.me/524434742859?text='+encodeURIComponent(mensaje), '_blank');
+            window.open('https://wa.me/524439608034?text='+encodeURIComponent(mensaje), '_blank');
             if (btn) {
                 btn.disabled = false;
                 btn.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg> Pedir Cotización por WhatsApp';
@@ -4772,11 +4828,16 @@ function _cargarFavoritosFirestore(uid) {
         var btnActivo = document.querySelector('.btn-modo-velas.activo');
         if (btnActivo) {
             var modos = {
-                'btnModoTodosProductos': 'mostrar_todo',
-                'btnModoTodos':          'todos',
-                'btnModoArreglos':       'arreglos',
-                'btnModoDecoraciones':   'decoraciones',
-                'btnModoEtiquetas':      'etiquetas'
+                'btnModoTodosProductos':  'mostrar_todo',
+                'btnModoFiguras':         'figuras',
+                'btnModoBases':           'bases',
+                'btnModoMacetas':         'macetas',
+                'btnModoTazones':         'tazones',
+                'btnModoPortaVelas':      'portavelas',
+                'btnModoPortaInciensos':  'portainciensos',
+                'btnModoArreglos':        'arreglos',
+                'btnModoAditamentos':     'aditamentos',
+                'btnModoEtiquetas':       'etiquetas'
             };
             var modo = modos[btnActivo.id] || 'mostrar_todo';
             if (typeof window.cambiarModoVelas === 'function') window.cambiarModoVelas(modo);
