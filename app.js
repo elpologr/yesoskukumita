@@ -657,7 +657,10 @@ if (document.readyState === 'loading') {
 
     function obtenerTarjetasVisibles() {
         return Array.from(document.querySelectorAll('#gridProductos .card-dinamica'))
-            .filter(function(c) { return !c.classList.contains('oculto'); });
+            .filter(function(c) {
+                return !c.classList.contains('oculto') &&
+                       !c.classList.contains('oculto-forma-carrusel');
+            });
     }
 
     function calcularTotalPaginas() {
@@ -4877,6 +4880,11 @@ function aplicarFiltroFormaCarrusel() {
             card.classList.toggle('oculto-forma-carrusel', !coincide);
         }
     });
+    // Limpiar hash de página para que actualizarPaginacion arranque siempre desde la 1
+    if (window.history && window.history.replaceState) {
+        var hashLimpio = (window.location.hash || '').replace(/#?pagina=\d+/, '').replace(/^#?&/, '').replace(/^#/, '');
+        window.history.replaceState(null, '', hashLimpio ? '#' + hashLimpio : window.location.pathname);
+    }
     if (typeof window.actualizarPaginacion === 'function') window.actualizarPaginacion();
 }
 
