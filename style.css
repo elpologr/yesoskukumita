@@ -15,12 +15,15 @@
     11. Media Queries
 ============================================================ */
 
+/* --- FUENTE CORMORANT GARAMOND (igual al banner) --- */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&display=swap');
+
 /* --- CONFIGURACIÓN BASE Y COLORES --- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
         }
 
         html {
@@ -34,8 +37,15 @@
             position: relative;
         }
         body {
-            background-color: #fdfbf7;
-            color: #4a3b32;
+            background: linear-gradient(160deg,
+                #e8d5a8 0%,
+                #ddc898 18%,
+                #cfc0a8 38%,
+                #c4b4c0 60%,
+                #baadc8 78%,
+                #c8b8d0 100%);
+            background-attachment: fixed;
+            color: #3a2e26;
         }
 
         header {
@@ -157,7 +167,9 @@
 
         /* --- SECCIÓN DE PRECIOS (estilo yesos adaptado a velas) --- */
         .seccion-precios-velas {
-            background-color: white;
+            background-color: rgba(255,252,245,0.72);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
             padding: 18px 15px;
             border-radius: 12px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
@@ -228,7 +240,9 @@
 
         /* --- PANEL DE FILTROS AVANZADOS --- */
         .seccion-filtros {
-            background: white;
+            background: rgba(255,252,245,0.72);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
             padding: 1.5rem;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.03);
