@@ -1272,8 +1272,9 @@ if (document.readyState === 'loading') {
 
         // Botón WhatsApp
         document.getElementById('mpBtnWhatsapp').onclick = () => {
-            const texto = encodeURIComponent('Hola, me interesa el producto: ' + nombre + (precioNum ? ' ($' + precioNum + ' MXN)' : ''));
-            window.open('https://wa.me/524431322032?text=' + texto, '_blank');
+            const textoPlano = 'Hola, me interesa el producto: ' + nombre + (precioNum ? ' ($' + precioNum + ' MXN)' : '');
+            const imagenProducto = (galeriaImagenes && galeriaImagenes[0]) || '';
+            compartirConImagenOFallback(textoPlano, imagenProducto, '524431322032');
         };
 
         // Botón Compartir — actualiza OG y abre submenu
@@ -1285,7 +1286,7 @@ if (document.readyState === 'loading') {
             if (typeof _actualizarMetaOG === 'function') {
                 _actualizarMetaOG(nombre, descripcion, galeriaImagenes[0] || '', urlOG);
             }
-            abrirSubmenuCompartir(url, nombre);
+            abrirSubmenuCompartir(url, nombre, galeriaImagenes[0] || '');
         };
 
         renderizarGaleria();
@@ -4388,10 +4389,12 @@ _ready(function() {
 // ══════════════════════════════════════════════════════
 var _scUrlActual = '';
 var _scNombreActual = '';
+var _scImagenActual = '';
 
-function abrirSubmenuCompartir(url, nombre) {
+function abrirSubmenuCompartir(url, nombre, imagen) {
     _scUrlActual = url;
     _scNombreActual = nombre || 'Producto';
+    _scImagenActual = imagen || '';
     var linkEl = document.getElementById('scLinkTexto');
     if (linkEl) linkEl.textContent = url;
     document.getElementById('submenuCompartir').classList.add('abierto');
@@ -4444,12 +4447,69 @@ function _urlOG(urlPaginaReal) {
     }
 }
 
+// ── Intenta compartir TEXTO + IMAGEN real usando el menú nativo del celular
+//    (Web Share API). Si no es posible (computadora, navegador sin soporte,
+//    el usuario cancela, etc.), cae automáticamente al método clásico de
+//    abrir un chat de WhatsApp con el número indicado (solo texto).
+//    numeroWhatsApp: opcional, ej. '524431322032'. Si se omite, usa wa.me/?text=
+async function compartirConImagenOFallback(textoPlano, imagenUrl, numeroWhatsApp) {
+    const abrirWaMeFallback = () => {
+        const texto = encodeURIComponent(textoPlano);
+        const base = numeroWhatsApp ? ('https://wa.me/' + numeroWhatsApp) : 'https://wa.me/';
+        window.open(base + '?text=' + texto, '_blank');
+    };
+
+    // Solo intentamos Web Share con archivo si: hay navigator.share,
+    // hay navigator.canShare, y tenemos una URL de imagen.
+    const puedeIntentarShare = !!(navigator.share && navigator.canShare && imagenUrl);
+
+    if (!puedeIntentarShare) {
+        abrirWaMeFallback();
+        return;
+    }
+
+    try {
+        // Descargar la imagen y convertirla en un File para poder adjuntarla.
+        const respuesta = await fetch(imagenUrl, { mode: 'cors' });
+        if (!respuesta.ok) throw new Error('No se pudo descargar la imagen');
+        const blob = await respuesta.blob();
+        const extension = (imagenUrl.split('.').pop() || 'jpg').split(/[?#]/)[0].toLowerCase();
+        const tipoMime = blob.type || ('image/' + (extension === 'jpg' ? 'jpeg' : extension));
+        const archivo = new File([blob], 'producto.' + extension, { type: tipoMime });
+
+        const dataParaCompartir = { text: textoPlano, files: [archivo] };
+
+        if (!navigator.canShare(dataParaCompartir)) {
+            // Este navegador no soporta compartir archivos de este tipo.
+            abrirWaMeFallback();
+            return;
+        }
+
+        await navigator.share(dataParaCompartir);
+        // Si el usuario cancela el menú nativo, navigator.share lanza un
+        // AbortError, lo cual cae al catch — y AHÍ decidimos no forzar el
+        // fallback, porque cancelar fue una decisión consciente del usuario.
+    } catch (err) {
+        if (err && err.name === 'AbortError') {
+            // El usuario cerró el menú de compartir a propósito. No hacemos nada más.
+            return;
+        }
+        // Cualquier otro error (CORS al descargar la imagen, navegador raro, etc.)
+        // recurrimos al método clásico para no dejar al usuario sin poder enviar el mensaje.
+        abrirWaMeFallback();
+    }
+}
+
 function compartirEnWhatsApp() {
-    // Usamos la URL del Worker (si está configurado) para que WhatsApp
-    // lea las meta tags OG y muestre la imagen del producto, igual que en Facebook.
+    // Usamos la URL del Worker (si está configurado) para que, en caso de
+    // recurrir al método clásico (computadora o sin soporte), WhatsApp
+    // lea las meta tags OG y muestre la imagen del producto en la vista previa.
     var urlParaWhatsApp = _urlOG(_scUrlActual);
-    var texto = encodeURIComponent('🕯️ Mira este producto de Yesos Fer Kukúmita: ' + _scNombreActual + '\n' + urlParaWhatsApp);
-    window.open('https://wa.me/?text=' + texto, '_blank');
+    var textoPlano = '🕯️ Mira este producto de Yesos Fer Kukúmita: ' + _scNombreActual + '\n' + urlParaWhatsApp;
+    // En celular, intenta adjuntar la imagen real vía el menú nativo de compartir.
+    // Si no es posible, cae automáticamente a wa.me con el texto (incluye el link,
+    // que sigue mostrando la imagen como vista previa del link).
+    compartirConImagenOFallback(textoPlano, _scImagenActual, null);
 }
 
 function compartirEnFacebook() {
