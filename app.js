@@ -4445,7 +4445,10 @@ function _urlOG(urlPaginaReal) {
 }
 
 function compartirEnWhatsApp() {
-    var texto = encodeURIComponent('🕯️ Mira este producto de Yesos Fer Kukúmita: ' + _scNombreActual + '\n' + _scUrlActual);
+    // Usamos la URL del Worker (si está configurado) para que WhatsApp
+    // lea las meta tags OG y muestre la imagen del producto, igual que en Facebook.
+    var urlParaWhatsApp = _urlOG(_scUrlActual);
+    var texto = encodeURIComponent('🕯️ Mira este producto de Yesos Fer Kukúmita: ' + _scNombreActual + '\n' + urlParaWhatsApp);
     window.open('https://wa.me/?text=' + texto, '_blank');
 }
 
