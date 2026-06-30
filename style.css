@@ -23,7 +23,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+            font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
         }
 
         html {
@@ -1028,7 +1028,7 @@
             border-radius: 0 8px 8px 0;
             margin: 0 0 12px 0;
             line-height: 1.5;
-            font-family: Georgia, serif;
+            font-family: 'Playfair Display', Georgia, serif;
         }
         .mp-mayoreo-texto strong { color: #8c7565; }
         .mp-precios-fila {
@@ -1928,7 +1928,7 @@
             top: -10px; left: 24px;
             font-size: 72px;
             color: #c8a98a;
-            font-family: Georgia, serif;
+            font-family: 'Playfair Display', Georgia, serif;
             line-height: 1;
             opacity: 0.35;
         }
@@ -1938,7 +1938,7 @@
             color: #5c4d43;
             margin: 0 0 4px 0;
             letter-spacing: 1px;
-            font-family: Georgia, serif;
+            font-family: 'Playfair Display', Georgia, serif;
         }
         .bio-subtitulo {
             font-size: 0.85rem;
@@ -1958,7 +1958,7 @@
             line-height: 1.85;
             color: #5c4d43;
             margin: 0;
-            font-family: Georgia, serif;
+            font-family: 'Playfair Display', Georgia, serif;
         }
         .bio-texto em {
             font-size: 1.1rem;
