@@ -4962,3 +4962,100 @@ function aplicarFiltroFormaCarrusel() {
 
 // ══════════════════════════════════════════════════════════════════
 // _reordenarBuscadorArreglos eliminada — el orden se mantiene directamente en cambiarModoVelas.
+
+// ══════════════════════════════════════════════════════════════════
+// AVISO DE PRIVACIDAD Y COOKIES
+// ══════════════════════════════════════════════════════════════════
+
+var _COOKIE_KEY = 'yesosfer-cookies-aceptadas';
+
+/**
+ * Inicializa la barra de cookies al cargar la página.
+ * Si el usuario ya aceptó antes, la oculta de inmediato sin animación.
+ */
+function _initBarraCookies() {
+    var barra = document.getElementById('barraCookies');
+    if (!barra) return;
+    if (localStorage.getItem(_COOKIE_KEY) === '1') {
+        barra.classList.add('oculta');
+    }
+    // Desplaza hacia abajo el botón del drawer para que no quede tapado
+    _ajustarOffsetDrawer();
+}
+
+/**
+ * El usuario presionó "Aceptar" — guarda en localStorage y oculta la barra.
+ */
+function aceptarCookies() {
+    localStorage.setItem(_COOKIE_KEY, '1');
+    var barra = document.getElementById('barraCookies');
+    if (barra) barra.classList.add('oculta');
+}
+
+/**
+ * Abre la pantalla de aviso de privacidad (desliza desde la derecha).
+ */
+function abrirPantallaPrivacidad() {
+    var pantalla = document.getElementById('pantallaPrivacidad');
+    if (!pantalla) return;
+    // Mostrar primero (quita el display:none), luego en el siguiente frame agregar la clase
+    // para que la transición CSS se ejecute correctamente
+    pantalla.style.display = 'flex';
+    requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+            pantalla.classList.add('abierta');
+        });
+    });
+    history.pushState({ kukumitaModal: 'privacidad' }, '');
+}
+
+/**
+ * Cierra la pantalla de aviso de privacidad.
+ */
+function cerrarPantallaPrivacidad() {
+    var pantalla = document.getElementById('pantallaPrivacidad');
+    if (!pantalla) return;
+    pantalla.classList.remove('abierta');
+    // Esperar a que termine la transición (280ms) antes de volver a ocultar
+    setTimeout(function() {
+        if (!pantalla.classList.contains('abierta')) {
+            pantalla.style.display = 'none';
+        }
+    }, 300);
+}
+
+/**
+ * Ajusta el top del btn-abrir-drawer para que no quede debajo de la barra de cookies
+ * cuando esta está visible. En móvil la barra mide ~38px, en desktop ~32px.
+ */
+function _ajustarOffsetDrawer() {
+    var barra   = document.getElementById('barraCookies');
+    var btnMenu = document.querySelector('.btn-abrir-drawer');
+    if (!barra || !btnMenu) return;
+    if (barra.classList.contains('oculta')) {
+        btnMenu.style.top = '';   // valor CSS por defecto
+    } else {
+        var altoBarra = barra.offsetHeight || 38;
+        btnMenu.style.top = (altoBarra + 8) + 'px';
+    }
+}
+
+// Conectar cierre con el botón Atrás del navegador/móvil
+(function _patchPopstatePrivacidad() {
+    var _popOriginal = window.onpopstate;
+    window.addEventListener('popstate', function(e) {
+        // Si la pantalla de privacidad está abierta, cerrarla primero
+        var pantalla = document.getElementById('pantallaPrivacidad');
+        if (pantalla && pantalla.classList.contains('abierta')) {
+            pantalla.classList.remove('abierta');
+            setTimeout(function() {
+                if (!pantalla.classList.contains('abierta')) {
+                    pantalla.style.display = 'none';
+                }
+            }, 300);
+        }
+    });
+})();
+
+// Inicializar barra de cookies cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', _initBarraCookies);

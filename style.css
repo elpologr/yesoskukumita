@@ -3268,3 +3268,173 @@ body.modo-oscuro .cart-total-valor { color: #f0e8e0; }
 body.busqueda-global-activa .selector-modo-velas-wrap { opacity: 0.5; pointer-events: none; }
 body.busqueda-global-activa #bloqueFiltroPrecioArreglos,
 body.busqueda-global-activa #bloqueFiltroPrecioTodos { opacity: 0.4; pointer-events: none; }
+
+/* ══════════════════════════════════════════════════════════════════
+   BARRA DE COOKIES Y PANTALLA DE AVISO DE PRIVACIDAD
+   ══════════════════════════════════════════════════════════════════ */
+
+#barraCookies {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 99998;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px 16px;
+    padding: 8px 16px;
+    background: #2c2420;
+    color: #f5efe8;
+    font-size: 0.82rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+#barraCookies.oculta {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+}
+#barraCookiesTexto {
+    flex: 1 1 auto;
+    min-width: 200px;
+    line-height: 1.4;
+}
+#barraCookiesBotones {
+    display: flex;
+    gap: 8px;
+    flex: 0 0 auto;
+}
+#barraCookiesBotones button {
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 7px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.18s;
+    white-space: nowrap;
+}
+#btnVerAvisoBar {
+    background: transparent;
+    color: #f5efe8;
+    border-color: rgba(245,239,232,0.5);
+}
+#btnVerAvisoBar:hover { border-color: #f5efe8; }
+#btnAceptarCookies {
+    background: #8c7565;
+    color: #fff;
+    border-color: #8c7565;
+}
+#btnAceptarCookies:hover { background: #76614f; }
+
+@media (max-width: 480px) {
+    #barraCookies { font-size: 0.76rem; padding: 8px 10px; }
+    #barraCookiesBotones button { padding: 6px 11px; font-size: 0.74rem; }
+}
+
+#pantallaPrivacidad {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    background: #fdfaf6;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.28s ease;
+}
+#pantallaPrivacidad.abierta {
+    transform: translateX(0);
+}
+.privacidad-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 14px 16px;
+    background: #fff;
+    border-bottom: 1px solid #eee2d6;
+    flex: 0 0 auto;
+}
+.btn-volver-privacidad {
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #8c7565;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px 4px;
+}
+.privacidad-titulo {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #3a2f27;
+    text-align: center;
+    flex: 1;
+}
+.privacidad-body {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 18px 18px 40px;
+    max-width: 720px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+.privacidad-fecha {
+    font-size: 0.78rem;
+    color: #a89a8a;
+    margin: 0 0 16px;
+    font-style: italic;
+}
+.privacidad-seccion-titulo {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1rem;
+    color: #8c7565;
+    margin: 22px 0 8px;
+}
+.privacidad-parrafo {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: #4a3f35;
+    margin: 0 0 10px;
+}
+.privacidad-lista {
+    margin: 0 0 10px;
+    padding-left: 20px;
+}
+.privacidad-lista li {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: #4a3f35;
+    margin-bottom: 6px;
+}
+.privacidad-enlace {
+    color: #8c7565;
+    text-decoration: underline;
+}
+.privacidad-aceptar-bloque {
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px solid #eee2d6;
+    text-align: center;
+}
+.privacidad-btn-aceptar {
+    font-family: inherit;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #fff;
+    background: #8c7565;
+    border: none;
+    border-radius: 24px;
+    padding: 12px 28px;
+    cursor: pointer;
+    transition: background 0.18s;
+}
+.privacidad-btn-aceptar:hover { background: #76614f; }
+.privacidad-nota-aceptar {
+    font-size: 0.74rem;
+    color: #a89a8a;
+    margin: 10px 0 0;
+}
